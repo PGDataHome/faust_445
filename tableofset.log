@@ -1,56 +1,23 @@
-+ƒaµS† v1.8.1-+-----------------------------------------------------------------------------------+
-| id          | table-of-sets-windowed-v2                                                         |
-| transport   | [URL('kafka://localhost:9092')]                                                   |
-| store       | memory:                                                                           |
-| web         | http://localhost:6066/                                                            |
-| log         | -stderr- (warn)                                                                   |
-| pid         | 18118                                                                             |
-| hostname    | pascal-asus                                                                       |
-| platform    | CPython 3.7.3 (Linux x86_64)                                                      |
-|        +    | Cython (GCC 8.3.0)                                                                |
-| drivers     |                                                                                   |
-|   transport | aiokafka=1.0.4                                                                    |
-|   web       | aiohttp=3.5.4                                                                     |
-| datadir     | /home/hadoop/kafka_2.11-2.3.0/tableofset_issue_445/table-of-sets-windowed-data    |
-| appdir      | /home/hadoop/kafka_2.11-2.3.0/tableofset_issue_445/table-of-sets-windowed-data/v2 |
-+-------------+-----------------------------------------------------------------------------------+
-[?25l[2019-10-28 23:09:09,414] [18118] [ERROR] [^Worker]: Error: TypeError("Channel must be channel, topic, or str; not <class 'coroutine'>") 
 Traceback (most recent call last):
-  File "/usr/local/lib/python3.7/dist-packages/mode-4.1.2-py3.7.egg/mode/worker.py", line 267, in execute_from_commandline
-    self.loop.run_until_complete(self._starting_fut)
-  File "/usr/lib/python3.7/asyncio/base_events.py", line 584, in run_until_complete
-    return future.result()
-  File "/usr/local/lib/python3.7/dist-packages/mode-4.1.2-py3.7.egg/mode/services.py", line 727, in start
-    await self._default_start()
-  File "/usr/local/lib/python3.7/dist-packages/mode-4.1.2-py3.7.egg/mode/services.py", line 734, in _default_start
-    await self._actually_start()
-  File "/usr/local/lib/python3.7/dist-packages/mode-4.1.2-py3.7.egg/mode/services.py", line 758, in _actually_start
-    await child.maybe_start()
-  File "/usr/local/lib/python3.7/dist-packages/mode-4.1.2-py3.7.egg/mode/services.py", line 786, in maybe_start
-    await self.start()
-  File "/usr/local/lib/python3.7/dist-packages/mode-4.1.2-py3.7.egg/mode/services.py", line 727, in start
-    await self._default_start()
-  File "/usr/local/lib/python3.7/dist-packages/mode-4.1.2-py3.7.egg/mode/services.py", line 734, in _default_start
-    await self._actually_start()
-  File "/usr/local/lib/python3.7/dist-packages/mode-4.1.2-py3.7.egg/mode/services.py", line 758, in _actually_start
-    await child.maybe_start()
-  File "/usr/local/lib/python3.7/dist-packages/mode-4.1.2-py3.7.egg/mode/services.py", line 786, in maybe_start
-    await self.start()
-  File "/usr/local/lib/python3.7/dist-packages/mode-4.1.2-py3.7.egg/mode/services.py", line 727, in start
-    await self._default_start()
-  File "/usr/local/lib/python3.7/dist-packages/mode-4.1.2-py3.7.egg/mode/services.py", line 734, in _default_start
-    await self._actually_start()
-  File "/usr/local/lib/python3.7/dist-packages/mode-4.1.2-py3.7.egg/mode/services.py", line 751, in _actually_start
-    await self.on_start()
-  File "/usr/local/lib/python3.7/dist-packages/faust-1.8.1-py3.7-linux-x86_64.egg/faust/agents/manager.py", line 31, in on_start
-    self.update_topic_index()
-  File "/usr/local/lib/python3.7/dist-packages/faust-1.8.1-py3.7-linux-x86_64.egg/faust/agents/manager.py", line 64, in update_topic_index
-    for topic in agent.get_topic_names():
-  File "/usr/local/lib/python3.7/dist-packages/faust-1.8.1-py3.7-linux-x86_64.egg/faust/agents/agent.py", line 971, in get_topic_names
-    channel = self.channel
-  File "/usr/local/lib/python3.7/dist-packages/faust-1.8.1-py3.7-linux-x86_64.egg/faust/agents/agent.py", line 985, in channel
-    **self._channel_kwargs,
-  File "/usr/local/lib/python3.7/dist-packages/faust-1.8.1-py3.7-linux-x86_64.egg/faust/agents/agent.py", line 494, in _prepare_channel
-    f'Channel must be channel, topic, or str; not {type(channel)}')
-TypeError: Channel must be channel, topic, or str; not <class 'coroutine'>
-[?25h
+  File "/usr/local/bin/faust", line 11, in <module>
+    load_entry_point('faust==1.9.0', 'console_scripts', 'faust')()
+  File "/usr/local/lib/python3.7/dist-packages/click/core.py", line 764, in __call__
+    return self.main(*args, **kwargs)
+  File "/usr/local/lib/python3.7/dist-packages/click/core.py", line 716, in main
+    with self.make_context(prog_name, args, **extra) as ctx:
+  File "/usr/local/lib/python3.7/dist-packages/faust-1.9.0-py3.7-linux-x86_64.egg/faust/cli/base.py", line 401, in make_context
+    self._maybe_import_app()
+  File "/usr/local/lib/python3.7/dist-packages/faust-1.9.0-py3.7-linux-x86_64.egg/faust/cli/base.py", line 366, in _maybe_import_app
+    find_app(appstr)
+  File "/usr/local/lib/python3.7/dist-packages/faust-1.9.0-py3.7-linux-x86_64.egg/faust/cli/base.py", line 293, in find_app
+    val = symbol_by_name(app, imp=imp)
+  File "/usr/local/lib/python3.7/dist-packages/mode-4.1.3-py3.7.egg/mode/utils/imports.py", line 201, in symbol_by_name
+    module = imp(module_name, package=package, **kwargs)
+  File "/usr/local/lib/python3.7/dist-packages/mode-4.1.3-py3.7.egg/mode/utils/imports.py", line 305, in import_from_cwd
+    return imp(module, package=package)
+  File "/usr/lib/python3.7/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 965, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'examples'
