@@ -8,7 +8,7 @@ error traces in log file
 # 1: kafka is running locally
 
 # 2: Terminal: start worker
-cd tableofset_issue_445
+cd ~/kafka
 pipenv install
-pipenv run faust -A tableofset worker 2>&1 |tee tableofset.log
+pipenv run faust -A analytics worker 2>&1 |tee analytics.log
 
