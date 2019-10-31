@@ -52,7 +52,8 @@ windowSize = 60
 # timeDelay ( sec )
 timeDelay = 30
 
-page_visits = app.topic('page-visits', key_type=str, value_type=PageVisit).maybe_declare()
+page_visits = app.topic('page-visits', key_type=str, value_type=PageVisit)
+# page_visits = app.topic('page-visits', key_type=str, value_type=PageVisit).maybe_declare()
 
 urls_total = app.SetTable(
 		'urls_total',
