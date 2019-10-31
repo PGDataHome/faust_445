@@ -70,14 +70,14 @@ user_total = app.SetTable(
 @app.timer(interval=timeDelay)
 @app.agent( page_visits )
 async def UrlVisitCountBolt(visits):
-	async for visit in visits.group_by( visit.url ):
+	async for visit in visits.group_by( PageVisit.url ):
 		nb += 1
 	total = urls_total[url].total + nb - urls_total[url].delta(deltatime(minutes=windowSize))
 
 @app.timer(interval=timeDelay)
 @app.agent( page_visits )
 async def UserVisitCountBolt(visits):
-	async for visit in visits.group_by( visit.userid ):
+	async for visit in visits.group_by( PageVisit.userid ):
 		nb += 1
 	total = user_total[url].total + nb - user_total[url].delta(deltatime(minutes=windowSize))
 
