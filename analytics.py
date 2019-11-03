@@ -27,11 +27,15 @@ import faust
 import aiohttp
 import asyncio
 import json
+import jsonpickle
 import random
 
 class PageVisit(faust.Record, serializer='json', isodates=True):
 	url: str
 	userid: int
+	
+	def serialize(self):
+		return { 'url': self.url, 'userid': self.userid }
 
 class VisitStat(faust.Record, serializer='json', isodates=True):
 	nb: int
@@ -93,10 +97,9 @@ UsersList = list( range(5) )
 async def PageVisitSpout():
 	url = random.choices( UrlsList )
 	id = random.choices( UsersList )
-	visit = PageVisit( url, id )
-	page_visits.send(
-		value=json.dumps( visit ).encode(),
-		key=str( url ).encode()
+	await page_visits.send(
+		key=url,
+		value= PageVisit( url, id )
 		)
 
 if __name__ == '__main__':

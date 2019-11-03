@@ -4,7 +4,7 @@
 | store       | memory:                                         |
 | web         | http://localhost:6066/                          |
 | log         | -stderr- (warn)                                 |
-| pid         | 7325                                            |
+| pid         | 9222                                            |
 | hostname    | pascal-asus                                     |
 | platform    | CPython 3.7.3 (Linux x86_64)                    |
 |        +    | Cython (GCC 8.3.0)                              |
@@ -15,7 +15,7 @@
 | appdir      | /home/hadoop/kafka_2.11-2.3.0/analytics-data/v1 |
 +-------------+-------------------------------------------------+
 [?25l[?25h OK ^
-[2019-11-01 00:55:44,090] [7325] [ERROR] [^-App]: Crashed reason=TypeError('Object of type PageVisit is not JSON serializable') 
+[2019-11-03 10:41:50,363] [9222] [ERROR] [^-App]: Crashed reason=TypeError("unsupported operand type(s) for &: 'str' and 'int'") 
 Traceback (most recent call last):
   File "/home/hadoop/.local/lib/python3.7/site-packages/mode/services.py", line 770, in _execute_task
     await task
@@ -23,16 +23,24 @@ Traceback (most recent call last):
     return await task()
   File "/usr/local/lib/python3.7/dist-packages/faust-1.9.0-py3.7-linux-x86_64.egg/faust/app/base.py", line 971, in around_timer
     await fun(*args)
-  File "/home/hadoop/kafka_2.11-2.3.0/analytics.py", line 98, in PageVisitSpout
-    value=json.dumps( visit ).encode(),
-  File "/usr/lib/python3.7/json/__init__.py", line 231, in dumps
-    return _default_encoder.encode(obj)
-  File "/usr/lib/python3.7/json/encoder.py", line 199, in encode
-    chunks = self.iterencode(o, _one_shot=True)
-  File "/usr/lib/python3.7/json/encoder.py", line 257, in iterencode
-    return _iterencode(o, 0)
-  File "/usr/lib/python3.7/json/encoder.py", line 179, in default
-    raise TypeError(f'Object of type {o.__class__.__name__} '
-TypeError: Object of type PageVisit is not JSON serializable
-[2019-11-01 00:55:46,096] [7325] [CRITICAL] [^Worker]: We experienced a crash! Reraising original exception... 
+  File "/home/hadoop/kafka_2.11-2.3.0/analytics.py", line 102, in PageVisitSpout
+    value= PageVisit( url, id )
+  File "/usr/local/lib/python3.7/dist-packages/faust-1.9.0-py3.7-linux-x86_64.egg/faust/topics.py", line 192, in send
+    callback=callback,
+  File "/usr/local/lib/python3.7/dist-packages/faust-1.9.0-py3.7-linux-x86_64.egg/faust/channels.py", line 299, in _send_now
+    schema, key_serializer, value_serializer, callback))
+  File "/usr/local/lib/python3.7/dist-packages/faust-1.9.0-py3.7-linux-x86_64.egg/faust/topics.py", line 416, in publish_message
+    headers=headers,
+  File "/usr/local/lib/python3.7/dist-packages/faust-1.9.0-py3.7-linux-x86_64.egg/faust/transport/drivers/aiokafka.py", line 780, in send
+    transactional_id=transactional_id,
+  File "/home/hadoop/.local/lib/python3.7/site-packages/aiokafka/producer/producer.py", line 305, in send
+    key_bytes, value_bytes)
+  File "/home/hadoop/.local/lib/python3.7/site-packages/aiokafka/producer/producer.py", line 239, in _partition
+    serialized_key, all_partitions, available)
+  File "/home/hadoop/.local/lib/python3.7/site-packages/kafka/partitioner/default.py", line 29, in __call__
+    idx = murmur2(key)
+  File "/home/hadoop/.local/lib/python3.7/site-packages/kafka/partitioner/hashed.py", line 106, in murmur2
+    h ^= (data[length & ~3] & 0xff)
+TypeError: unsupported operand type(s) for &: 'str' and 'int'
+[2019-11-03 10:41:52,369] [9222] [CRITICAL] [^Worker]: We experienced a crash! Reraising original exception... 
 [?25h
