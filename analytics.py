@@ -33,17 +33,22 @@ import random
 class PageVisit(faust.Record, serializer='json', isodates=True):
 	url: str
 	userid: int
-	
-	def serialize(self):
-		return { 'url': self.url, 'userid': self.userid }
 
 class VisitStat(faust.Record, serializer='json', isodates=True):
-	nb: int
 	total: int
+	nb: int
 
 	def __init__(self, nb: int = 0, total: int = 0) :
 		self.nb = nb
 		self.total = total
+	
+	def decode(str):
+		t, n = json.decode( str )
+		return( VisitStat( t, n ))
+	
+	def encode(self):
+		v = { 'total': self.total, 'nb': self.nb }
+		return( json.encode( v ))
 
 app = faust.App(
     'analytics',
@@ -61,7 +66,8 @@ page_visits = app.topic('page-visits', key_type=str, value_type=PageVisit)
 
 urls_total = app.SetTable(
 		'urls_total',
-	    value_type=VisitStat,
+	    #v0: value_type=VisitStat,
+	    value_type=str,
 		).hopping((windowSize+1)*60, timeDelay, timedelta(minutes=(windowSize+1)), True)
 		# ).hopping((windowSize+1)*60, timeDelay, expires=timedelta(minutes=(windowSize+1)), key_index=True)
 
@@ -71,19 +77,35 @@ user_total = app.SetTable(
 		).hopping((windowSize+1)*60, timeDelay, timedelta(minutes=(windowSize+1)), True)
 		# ).hopping(((windowSize+1)*60, timeDelay, expires=timedelta(minutes=(windowSize+1)), key_index=True)
 
+def update_table( t, idx, nb ):
+	table = t[idx]
+
+	first = VisitStat.decode( table.delta(deltatime(minutes=windowSize)))
+	last = table.delta(deltatime(seconds=timeDelay))
+
+	total = last.total + nb - first.nb
+
+	table = VisitStat( total, nb ).encode()
+
 @app.timer(interval=timeDelay)
 @app.agent( page_visits )
 async def UrlVisitCountBolt(visits):
+	nb = 0
 	async for visit in visits.group_by( PageVisit.url ):
 		nb += 1
-	total = urls_total[url].total + nb - urls_total[url].delta(deltatime(minutes=windowSize))
+
+	update_table( urls_total, url, nb )
+	# total = urls_total[url].total + nb - urls_total[url].delta(deltatime(minutes=windowSize))
 
 @app.timer(interval=timeDelay)
 @app.agent( page_visits )
 async def UserVisitCountBolt(visits):
+	nb = 0
 	async for visit in visits.group_by( PageVisit.userid ):
 		nb += 1
-	total = user_total[url].total + nb - user_total[url].delta(deltatime(minutes=windowSize))
+
+	update_table( user_total, url, nb )
+	# total = user_total[url].total + nb - user_total[url].delta(deltatime(minutes=windowSize))
 
 UrlsList = [
 	"http://example.com/index.html",
@@ -97,9 +119,11 @@ UsersList = list( range(5) )
 async def PageVisitSpout():
 	url = random.choices( UrlsList )
 	id = random.choices( UsersList )
+
+
 	await page_visits.send(
 		key=url,
-		value= PageVisit( url, id )
+		value=PageVisit( url, id )
 		)
 
 if __name__ == '__main__':

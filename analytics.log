@@ -4,7 +4,7 @@
 | store       | memory:                                         |
 | web         | http://localhost:6066/                          |
 | log         | -stderr- (warn)                                 |
-| pid         | 9222                                            |
+| pid         | 3554                                            |
 | hostname    | pascal-asus                                     |
 | platform    | CPython 3.7.3 (Linux x86_64)                    |
 |        +    | Cython (GCC 8.3.0)                              |
@@ -15,7 +15,7 @@
 | appdir      | /home/hadoop/kafka_2.11-2.3.0/analytics-data/v1 |
 +-------------+-------------------------------------------------+
 [?25l[?25h OK ^
-[2019-11-03 10:41:50,363] [9222] [ERROR] [^-App]: Crashed reason=TypeError("unsupported operand type(s) for &: 'str' and 'int'") 
+[2019-11-06 00:00:09,779] [3554] [ERROR] [^-App]: Crashed reason=TypeError("unsupported operand type(s) for &: 'str' and 'int'") 
 Traceback (most recent call last):
   File "/home/hadoop/.local/lib/python3.7/site-packages/mode/services.py", line 770, in _execute_task
     await task
@@ -23,8 +23,8 @@ Traceback (most recent call last):
     return await task()
   File "/usr/local/lib/python3.7/dist-packages/faust-1.9.0-py3.7-linux-x86_64.egg/faust/app/base.py", line 971, in around_timer
     await fun(*args)
-  File "/home/hadoop/kafka_2.11-2.3.0/analytics.py", line 102, in PageVisitSpout
-    value= PageVisit( url, id )
+  File "/home/hadoop/kafka_2.11-2.3.0/analytics.py", line 126, in PageVisitSpout
+    value=PageVisit( url, id )
   File "/usr/local/lib/python3.7/dist-packages/faust-1.9.0-py3.7-linux-x86_64.egg/faust/topics.py", line 192, in send
     callback=callback,
   File "/usr/local/lib/python3.7/dist-packages/faust-1.9.0-py3.7-linux-x86_64.egg/faust/channels.py", line 299, in _send_now
@@ -42,5 +42,5 @@ Traceback (most recent call last):
   File "/home/hadoop/.local/lib/python3.7/site-packages/kafka/partitioner/hashed.py", line 106, in murmur2
     h ^= (data[length & ~3] & 0xff)
 TypeError: unsupported operand type(s) for &: 'str' and 'int'
-[2019-11-03 10:41:52,369] [9222] [CRITICAL] [^Worker]: We experienced a crash! Reraising original exception... 
+[2019-11-06 00:00:11,785] [3554] [CRITICAL] [^Worker]: We experienced a crash! Reraising original exception... 
 [?25h
